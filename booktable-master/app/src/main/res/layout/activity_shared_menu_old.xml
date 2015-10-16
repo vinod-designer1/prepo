@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.experiences.projects.booktable.SharedMenu">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/sm_et_frnd_search"
+                        android:layout_width="400dp"
+                        android:layout_height="10dp" />
+                    <Button
+                        android:id="@+id/sm_btn_add_person"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/sm_lv_friendList"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+                </ListView>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/sm_btn_confirm_menu"
+                android:layout_width="match_parent"
+                android:text="Confirm Menu"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_shared_hotel_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

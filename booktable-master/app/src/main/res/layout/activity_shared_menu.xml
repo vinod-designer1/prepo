@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.experiences.projects.booktable.SharedMenu">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_above="@+id/menu_layout_bottom">
+
+        <com.experiences.projects.booktable.view.SlidingTabLayout
+            android:id="@+id/menutabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:background="#ffffff"/>
+
+        <android.support.v4.view.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/sm_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <LinearLayout android:orientation="horizontal" android:id="@+id/menu_layout_bottom" android:background="@drawable/bottom_button_box_border" android:layout_width="fill_parent" android:layout_height="62.5dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
+        <Button android:id="@+id/menu_continue_button" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:text="@string/menu_preorder" style="@style/GoldButton" />
+    </LinearLayout>
+    <com.pnikosis.materialishprogress.ProgressWheel android:id="@+id/menu_progress_wheel" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</RelativeLayout>

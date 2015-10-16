@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_above="@+id/menu_tab_layout_bottom">
+        <include android:id="@+id/menu_tab_header"   android:layout_width="fill_parent" android:layout_height="140.0dip" layout="@layout/cell_image_centered_text" />
+        <ListView android:id="@+id/tab_listViewMenu" android:layout_below="@+id/menu_tab_header" android:layout_width="wrap_content" android:layout_height="fill_parent">
+        </ListView>
+    </RelativeLayout>
+
+</LinearLayout>

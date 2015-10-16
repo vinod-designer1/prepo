@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke android:width="0.5dip" android:color="@color/reserve_button_background_border" />
+    <solid android:color="@color/reserve_gold" />
+    <corners android:topLeftRadius="10.0dip" android:topRightRadius="10.0dip" android:bottomLeftRadius="10.0dip" android:bottomRightRadius="10.0dip" />
+</shape>

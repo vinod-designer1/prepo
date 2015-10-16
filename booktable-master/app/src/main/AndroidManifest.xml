@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.experiences.projects.booktable" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="@string/parse_app_id" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="@string/parse_client_key" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.parse.ui.ParseLoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
+
+            <!-- For more options, see https://www.parse.com/docs/android_guide#ui-login -->
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
+                android:value="true" />
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_EMAIL_AS_USERNAME"
+                android:value="true" />
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.FACEBOOK_LOGIN_ENABLED"
+                android:value="true" />
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.FACEBOOK_LOGIN_PERMISSIONS"
+                android:value="email,public_profile,user_friends,user_birthday" />
+        </activity>
+        <activity
+            android:name=".DispatchActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".HotelList"
+            android:label="@string/title_activity_hotel_list" >
+        </activity>
+        <activity
+            android:name=".SharedMenu"
+            android:label="@string/title_activity_shared_menu" >
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name=".SignupActivity"
+            android:label="@string/title_activity_signup" >
+        </activity>
+        <activity
+            android:name=".HotelProfileActivity"
+            android:label="@string/title_activity_hotel_profile" >
+        </activity>
+        <activity
+            android:name=".TimePrefActivity"
+            android:label="@string/title_activity_time_pref" >
+        </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name=".NumberRegActivity"
+            android:label="@string/title_activity_number_reg" >
+        </activity>
+    </application>
+
+</manifest>
