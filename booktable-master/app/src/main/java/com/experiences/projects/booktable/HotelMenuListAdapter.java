@@ -46,8 +46,6 @@ public class HotelMenuListAdapter extends ArrayAdapter<ParseObject> {
 
         item_qty_list = itemqtylist;
         mcontext = context;
-
-        Log.d("Hotel Menu List ",  itemqtylist.size() + " " + items.size());
     }
 
     private SpannableString getTextViewStyle(String view_text) {
@@ -88,67 +86,79 @@ public class HotelMenuListAdapter extends ArrayAdapter<ParseObject> {
             final int price = p.getInt("Price");
             Log.d("HotelMenu ", price + " ");
 
-            int item_qty = item_qty_list.get(p.getObjectId());
-
-            String myText = price + "\n" + item_qty + "\n" + (item_qty*price);
-            tv_qty.setText(getTextViewStyle(myText), TextView.BufferType.SPANNABLE);
-
-
-
             ImageButton menu_down_btn = (ImageButton) v.findViewById(R.id.menu_down_button);
-            menu_down_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("MenuAdap " , item_qty_list.keySet().toString());
-                    int item_qty = item_qty_list.get(p.getObjectId());
-
-                    if (item_qty > 0) {
-                        item_qty -= 1;
-                        total_cost -= price;
-                    }
-
-                    Log.d("MenuAdap", "Item Down " + item_qty);
+            ImageButton menu_up_btn = (ImageButton) v.findViewById(R.id.menu_up_button);
 
 
-                    item_qty_list.put(p.getObjectId(), item_qty);
+            if (item_qty_list != null) {
+                int item_qty = item_qty_list.get(p.getObjectId());
 
-                    String myText = price + "\n" + item_qty + "\n" + (item_qty*price);
+                String myText = price + "\n" + item_qty + "\n" + (item_qty*price);
+                tv_qty.setText(getTextViewStyle(myText), TextView.BufferType.SPANNABLE);
 
-                    tv_qty.setText(getTextViewStyle(myText), TextView.BufferType.SPANNABLE);
+
+
+
+                menu_down_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("MenuAdap " , item_qty_list.keySet().toString());
+                        int item_qty = item_qty_list.get(p.getObjectId());
+
+                        if (item_qty > 0) {
+                            item_qty -= 1;
+                            total_cost -= price;
+                        }
+
+                        Log.d("MenuAdap", "Item Down " + item_qty);
+
+
+                        item_qty_list.put(p.getObjectId(), item_qty);
+
+                        String myText = price + "\n" + item_qty + "\n" + (item_qty*price);
+
+                        tv_qty.setText(getTextViewStyle(myText), TextView.BufferType.SPANNABLE);
 
 //                    SharedMenu menuActivity = (SharedMenu) mcontext;
 //
 //                    View main_header_view = menuActivity.findViewById(R.id.menu_header);
 //                    TextView cost_view = (TextView) main_header_view.findViewById(R.id.cost_text_view);
 //                    cost_view.setText(String.valueOf(total_cost));
-                }
-            });
+                    }
+                });
 
-            ImageButton menu_up_btn = (ImageButton) v.findViewById(R.id.menu_up_button);
-            menu_up_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int item_qty = item_qty_list.get(p.getObjectId());
 
-                    item_qty += 1;
+                menu_up_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int item_qty = item_qty_list.get(p.getObjectId());
 
-                    total_cost += price;
+                        item_qty += 1;
 
-                    Log.d("MenuAdap", "Item Up " + item_qty);
+                        total_cost += price;
 
-                    item_qty_list.put(p.getObjectId(), item_qty);
+                        Log.d("MenuAdap", "Item Up " + item_qty);
 
-                    String myText = price + "\n" + item_qty + "\n" + (item_qty*price);
+                        item_qty_list.put(p.getObjectId(), item_qty);
 
-                    tv_qty.setText(getTextViewStyle(myText), TextView.BufferType.SPANNABLE);
+                        String myText = price + "\n" + item_qty + "\n" + (item_qty*price);
 
-                    SharedMenu menuActivity = (SharedMenu) mcontext;
+                        tv_qty.setText(getTextViewStyle(myText), TextView.BufferType.SPANNABLE);
+
+                        SharedMenu menuActivity = (SharedMenu) mcontext;
 
 //                    View main_header_view = menuActivity.findViewById(R.id.menu_header);
 //                    TextView cost_view = (TextView) main_header_view.findViewById(R.id.cost_text_view);
 //                    cost_view.setText(String.valueOf(total_cost));
-                }
-            });
+                    }
+                });
+            } else {
+                menu_down_btn.setVisibility(View.INVISIBLE);
+                menu_up_btn.setVisibility(View.INVISIBLE);
+                tv_qty.setVisibility(View.INVISIBLE);
+            }
+
+
         }
 
         return v;

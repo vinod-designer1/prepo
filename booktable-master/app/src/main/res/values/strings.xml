@@ -355,4 +355,15 @@ You’ve been added to our wait list, and we look forward to welcoming you soon.
     <string name="you_have_no_confirmed_reservations">You have no confirmed reservations.</string>
     <string name="zip">Zip</string>
     <string name="zip_code">Zip Code</string>
+    <string name="title_activity_home_activity_old">HomeActivityOld</string>
+    <string name="title_activity_test_nav">testNavActivity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_hotel_menu">HotelMenuActivity</string>
+    <string name="title_activity_user_booking">UserBookingActivity</string>
+    <string name="title_activity_user_booking_history">UserBookingHistoryActivity</string>
 </resources>

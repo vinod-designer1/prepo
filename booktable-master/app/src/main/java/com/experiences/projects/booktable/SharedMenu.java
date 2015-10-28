@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.app.Activity;
 import android.app.ExpandableListActivity;
@@ -13,6 +14,7 @@ import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SharedMenu extends ActionBarActivity {
+public class SharedMenu extends AppCompatActivity {
 
     static Context context;
     private HotelMenuListAdapter hotelItemAdapter;
@@ -96,9 +98,10 @@ public class SharedMenu extends ActionBarActivity {
         sm_pager = (ViewPager) findViewById(R.id.sm_pager);
 
         getHotelMenuItem(hotelid);
+        setUpActionBar();
 
         smActionBar = getSupportActionBar();
-        smActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//        smActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // ViewPager and its adapters use support library
         // fragments, so use getSupportFragmentManager.
@@ -106,31 +109,31 @@ public class SharedMenu extends ActionBarActivity {
                 new MenuCategoryPagerAdapter(
                         getSupportFragmentManager());
 
-        ViewPager.OnPageChangeListener page_listener = new ViewPager.OnPageChangeListener() {
-
-            /**
-             * on swipe select the respective tab
-             * */
-            @Override
-            public void onPageSelected(int position) {
-                smActionBar.setSelectedNavigationItem(position);
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-            }
-        };
-
-        sm_pager.setOnPageChangeListener(page_listener);
+//        ViewPager.OnPageChangeListener page_listener = new ViewPager.OnPageChangeListener() {
+//
+//            /**
+//             * on swipe select the respective tab
+//             * */
+//            @Override
+//            public void onPageSelected(int position) {
+//                smActionBar.setSelectedNavigationItem(position);
+//            }
+//
+//            @Override
+//            public void onPageScrolled(int arg0, float arg1, int arg2) {
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int arg0) {
+//            }
+//        };
+//
+//        sm_pager.setOnPageChangeListener(page_listener);
 
 
         tabs = (SlidingTabLayout) findViewById(R.id.menutabs);
         tabs.setDistributeEvenly(true);
-        tabs.setOnPageChangeListener(page_listener);
+//        tabs.setOnPageChangeListener(page_listener);
 
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
@@ -147,6 +150,15 @@ public class SharedMenu extends ActionBarActivity {
 
 
         //assignActionstoView();
+    }
+
+    private void setUpActionBar() {
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setDisplayShowCustomEnabled(true);
     }
 
 
@@ -275,24 +287,24 @@ public class SharedMenu extends ActionBarActivity {
 
                             categories.add(category);
 
-                            smActionBar.addTab(smActionBar.newTab().setText(category)
-                                    .setTabListener(new ActionBar.TabListener() {
-                                        @Override
-                                        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                                            sm_pager.setCurrentItem(tab.getPosition());
-                                        }
-
-                                        @Override
-                                        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                                        }
-
-                                        @Override
-                                        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                                        }
-                                    }));
+//                            smActionBar.addTab(smActionBar.newTab().setText(category)
+//                                    .setTabListener(new ActionBar.TabListener() {
+//                                        @Override
+//                                        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+//
+//                                            sm_pager.setCurrentItem(tab.getPosition());
+//                                        }
+//
+//                                        @Override
+//                                        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+//
+//                                        }
+//                                    }));
                         }
 
                         String objId = hotelItemList.get(i).getObjectId();
@@ -329,6 +341,12 @@ public class SharedMenu extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == android.R.id.home) {
+
+            Intent time_pref_intent = new Intent(this, TimePrefActivity.class);
+
+            NavUtils.navigateUpTo(this, time_pref_intent);
             return true;
         }
 
@@ -369,57 +387,57 @@ public class SharedMenu extends ActionBarActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "OBJECT " + (position + 1);
+            return categories.get(position);
         }
     }
 
     // Instances of this class are fragments representing a single
-// object in our collection.
-    public static class MenuCategoryFragment extends Fragment {
-        public static final String ARG_CAT = "category";
+        // object in our collection.
+        public static class MenuCategoryFragment extends Fragment {
+            public static final String ARG_CAT = "category";
 
-        HotelMenuListAdapter mc_menuAdapter;
-        ListView mc_menu_list;
+            HotelMenuListAdapter mc_menuAdapter;
+            ListView mc_menu_list;
 
-        @Override
-        public View onCreateView(LayoutInflater inflater,
-                                 ViewGroup container, Bundle savedInstanceState) {
-            // The last two arguments ensure LayoutParams are inflated
-            // properly.
-            View rootView = inflater.inflate(
-                    R.layout.fragment_menu_tab_view, container, false);
-            Bundle args = getArguments();
-            String category = args.getString(ARG_CAT);
+            @Override
+            public View onCreateView(LayoutInflater inflater,
+                                     ViewGroup container, Bundle savedInstanceState) {
+                // The last two arguments ensure LayoutParams are inflated
+                // properly.
+                View rootView = inflater.inflate(
+                        R.layout.fragment_menu_tab_view, container, false);
+                Bundle args = getArguments();
+                String category = args.getString(ARG_CAT);
 
-            final SharedPreferences myPref = context.getSharedPreferences("MyPref", context.MODE_PRIVATE);
+                final SharedPreferences myPref = context.getSharedPreferences("MyPref", context.MODE_PRIVATE);
 
-            String hotel_name = myPref.getString("HotelName", "");
-            String hotel_url = myPref.getString("HotelImageUrl", "");
+                String hotel_name = myPref.getString("HotelName", "");
+                String hotel_url = myPref.getString("HotelImageUrl", "");
 
-            setImage(rootView, hotel_name, hotel_url);
+                setImage(rootView, hotel_name, hotel_url);
 
-            mc_menuAdapter = new HotelMenuListAdapter(context, 0, menuListMap.get(category), itemQtyList);
-            mc_menu_list = (ListView) rootView.findViewById(R.id.tab_listViewMenu);
+                mc_menuAdapter = new HotelMenuListAdapter(context, 0, menuListMap.get(category), itemQtyList);
+                mc_menu_list = (ListView) rootView.findViewById(R.id.tab_listViewMenu);
 
-            if (mc_menuAdapter != null)
-                mc_menu_list.setAdapter(mc_menuAdapter);
-            else
-                Log.d("SharedMenu ",  "mc_menuAdapter is null");
+                if (mc_menuAdapter != null)
+                    mc_menu_list.setAdapter(mc_menuAdapter);
+                else
+                    Log.d("SharedMenu ",  "mc_menuAdapter is null");
 
-            return rootView;
-        }
+                return rootView;
+            }
 
-        private void setImage(View rootView, String hotelName, String pic) {
-            View main_header_view = rootView.findViewById(R.id.menu_tab_header);
-            ImageView header_image_view = (ImageView) main_header_view.findViewById(R.id.background_image);
-            Picasso.with(context).load(pic).resize(400, 300)
-                    .centerCrop().into(header_image_view);
+            private void setImage(View rootView, String hotelName, String pic) {
+                View main_header_view = rootView.findViewById(R.id.menu_tab_header);
+                ImageView header_image_view = (ImageView) main_header_view.findViewById(R.id.background_image);
+                Picasso.with(context).load(pic).resize(400, 300)
+                        .centerCrop().into(header_image_view);
 
-            main_header_view.findViewById(R.id.cost_text_view).setVisibility(View.VISIBLE);
+                main_header_view.findViewById(R.id.cost_text_view).setVisibility(View.VISIBLE);
 
-            TextView header_text_view = (TextView) main_header_view.findViewById(R.id.centered_text_view);
-            header_text_view.setText(hotelName);
-        }
+                TextView header_text_view = (TextView) main_header_view.findViewById(R.id.centered_text_view);
+                header_text_view.setText(hotelName);
+            }
     }
 
 

@@ -34,4 +34,5 @@ dependencies {
     provided files("$rootProject.projectDir/app/libs/ParseFacebookUtilsV4-1.10.1.jar")
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.pnikosis:materialish-progress:1.7'
+    compile 'br.com.liveo:navigationdrawer-material:2.3.5'
 }

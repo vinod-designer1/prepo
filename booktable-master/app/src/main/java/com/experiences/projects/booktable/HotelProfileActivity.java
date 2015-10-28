@@ -7,8 +7,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,8 +22,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -47,7 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class HotelProfileActivity extends ActionBarActivity {
+public class HotelProfileActivity extends AppCompatActivity {
 
     Context context;
     private HotelMenuListAdapter hotelItemAdapter;
@@ -72,6 +77,48 @@ public class HotelProfileActivity extends ActionBarActivity {
             Log.d("DATA CALLS", hotelid);
             fetchHotelInfo(hotelid);
         }
+
+        setUpActionBar();
+
+    }
+
+    private void setUpActionBar() {
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
+//        LayoutInflater mInflater = LayoutInflater.from(this);
+
+//        View mCustomView = mInflater.inflate(R.layout.actionbar_home, null);
+//        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.tv_action_title_text);
+//        mTitleTextView.setText("BookTable");
+//
+//        ImageView logoView = (ImageView) mCustomView
+//                .findViewById(R.id.iv_logoView);
+//        logoView.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(), "Title",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        ImageButton refreshButton = (ImageButton) mCustomView
+//                .findViewById(R.id.ib_actionbarRefreshBtn);
+//        refreshButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(), "Refresh Clicked!",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        mActionBar.setCustomView(mCustomView);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
 
     }
 
@@ -102,7 +149,8 @@ public class HotelProfileActivity extends ActionBarActivity {
 
                 } else {
                     // something went wrong
-                    Log.d("DATA CALLS", e.getMessage());
+
+                    Log.d("DATA CALLSAS", e.getMessage());
                 }
             }
         });
@@ -114,6 +162,7 @@ public class HotelProfileActivity extends ActionBarActivity {
         final JSONArray pictures = hotel.getJSONArray("Pictures");
         String desc = hotel.getString("Description");
         String location = hotel.getString("LocationName");
+        String price = hotel.getString("CostForTwo");
 
         String pic = "";
         try {
@@ -138,67 +187,47 @@ public class HotelProfileActivity extends ActionBarActivity {
         TextView tv_hotel_loc = (TextView) findViewById(R.id.address_label);
         tv_hotel_loc.setText(location);
 
+        TextView tv_hotel_attire = (TextView) findViewById(R.id.venue_attire);
+        tv_hotel_attire.setText("Casual");
+
+        TextView tv_hotel_price = (TextView) findViewById(R.id.venue_price);
+        tv_hotel_price.setText(price);
+
+        LinearLayout ll_hotel_menu = (LinearLayout) findViewById(R.id.venue_menu_button);
+        ll_hotel_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent menuIntent = new Intent(context, HotelMenuActivity.class);
+
+                context.startActivity(menuIntent);
+            }
+        });
+
 
         Button btn_confirm = (Button) findViewById(R.id.continue_button);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences mypref = getSharedPreferences("timer", Activity.MODE_PRIVATE);
-                String date = mypref.getString("Date", "2015-09-09");
-                String time = mypref.getString("Time", "00:00:00.0");
-                String people = mypref.getString("People", "");
+                SharedPreferences myPref = context.getSharedPreferences("MyPref", context.MODE_PRIVATE);
+                SharedPreferences.Editor userPrefEditor = myPref.edit();
 
-                Log.d("PREFDATA",  date + " " + time + " " + people);
+                userPrefEditor.putString("HotelId", hotel.getObjectId());
+                userPrefEditor.putString("HotelName", hotel.getString("Name"));
 
-                String oldstring = date + " " + time;
-
-
-                Date dateO;
+                String pic = "";
                 try {
-                    dateO = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(oldstring);
-                    final ParseObject userBooking = new ParseObject("UserBooking");
-                    userBooking.put("User", ParseUser.getCurrentUser());
-                    userBooking.put("BookedHotel", hotel);
-                    userBooking.put("ReservationTime", dateO);
-                    userBooking.put("BookingState", 1);
-                    userBooking.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
+                    pic = pictures.getString(0);
+                } catch (JSONException er) {
 
-                                SharedPreferences myPref = context.getSharedPreferences("MyPref", context.MODE_PRIVATE);
-                                SharedPreferences.Editor userPrefEditor = myPref.edit();
-
-                                userPrefEditor.putString("BookingId", userBooking.getObjectId());
-                                userPrefEditor.putString("HotelId", hotel.getObjectId());
-                                userPrefEditor.putString("HotelName", hotel.getString("Name"));
-
-                                String pic = "";
-                                try {
-                                    pic = pictures.getString(0);
-                                } catch (JSONException er) {
-
-                                }
-
-                                userPrefEditor.putString("HotelImageUrl", pic);
-
-                                userPrefEditor.commit();
-
-                                Intent reserveIntent = new Intent(context, TimePrefActivity.class);
-
-                                context.startActivity(reserveIntent);
-                            } else {
-                                Log.d("HPERROR", e.getMessage());
-                            }
-                        }
-                    });
-
-
-
-                } catch (java.text.ParseException e) {
-                    Log.d("HPERROR", e.getMessage());
                 }
 
+                userPrefEditor.putString("HotelImageUrl", pic);
+
+                userPrefEditor.commit();
+
+                Intent reserveIntent = new Intent(context, TimePrefActivity.class);
+
+                context.startActivity(reserveIntent);
             }
         });
 
@@ -221,6 +250,10 @@ public class HotelProfileActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == android.R.id.home) {
+            NavUtils.navigateUpTo(this,
+                    new Intent(this, HomeActivity.class));
             return true;
         }
 

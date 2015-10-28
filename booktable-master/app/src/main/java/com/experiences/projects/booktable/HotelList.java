@@ -2,6 +2,7 @@ package com.experiences.projects.booktable;
 
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -41,26 +42,32 @@ import java.util.List;
 import java.util.Map;
 
 
-public class HotelList extends ActionBarActivity {
+public class HotelList extends Fragment {
 
     Context context;
     HotelListAdapter hotelAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+    public void onCreate(Bundle savedInstanceState) {
+        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hotel_list);
+        context = getActivity();
+    }
 
-        context = this;
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_hotel_list, container, false);
+
+
 
 
         ArrayList<ParseObject> hotelInfo = new ArrayList<ParseObject>();
 
         hotelAdapter = new HotelListAdapter(context, 0, hotelInfo);
 
-        ListView hotelList = (ListView) findViewById(R.id.lv_hoste_list);
+        ListView hotelList = (ListView) view.findViewById(R.id.lv_hoste_list);
         hotelList.setAdapter(hotelAdapter);
 
         hotelList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,6 +81,7 @@ public class HotelList extends ActionBarActivity {
 
         fetchHotelList();
 
+        return view;
     }
 
     private void fetchHotelList() {
@@ -97,47 +105,47 @@ public class HotelList extends ActionBarActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hotel_list, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String query = searchView.getQuery().toString();
-
-                ParseQuery<ParseObject> hotelQuery = ParseQuery.getQuery("Hotel");
-
-                if (!query.isEmpty()) {
-                    hotelQuery.whereContains("Name", query);
-                    hotelQuery.whereContains("LocationName", query);
-                    hotelQuery.whereContains("Cuisines", query);
-                }
-
-                hotelQuery.findInBackground(new FindCallback<ParseObject>() {
-                    public void done(List<ParseObject> hotelList, ParseException e) {
-                        if (e == null) {
-                            hotelAdapter.clear();
-
-                            for (int i=0; i < hotelList.size(); ++i) {
-                                hotelAdapter.insert(hotelList.get(i), hotelAdapter.getCount());
-                            }
-
-                            hotelAdapter.notifyDataSetChanged();
-                        } else {
-                            Log.d("score", "Error: " + e.getMessage());
-                        }
-                    }
-                });
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_hotel_list, menu);
+//
+//        MenuItem searchItem = menu.findItem(R.id.action_search);
+//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//
+//        searchView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String query = searchView.getQuery().toString();
+//
+//                ParseQuery<ParseObject> hotelQuery = ParseQuery.getQuery("Hotel");
+//
+//                if (!query.isEmpty()) {
+//                    hotelQuery.whereContains("Name", query);
+//                    hotelQuery.whereContains("LocationName", query);
+//                    hotelQuery.whereContains("Cuisines", query);
+//                }
+//
+//                hotelQuery.findInBackground(new FindCallback<ParseObject>() {
+//                    public void done(List<ParseObject> hotelList, ParseException e) {
+//                        if (e == null) {
+//                            hotelAdapter.clear();
+//
+//                            for (int i=0; i < hotelList.size(); ++i) {
+//                                hotelAdapter.insert(hotelList.get(i), hotelAdapter.getCount());
+//                            }
+//
+//                            hotelAdapter.notifyDataSetChanged();
+//                        } else {
+//                            Log.d("score", "Error: " + e.getMessage());
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

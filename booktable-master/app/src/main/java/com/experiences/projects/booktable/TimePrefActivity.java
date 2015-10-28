@@ -7,8 +7,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
@@ -29,9 +32,11 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -41,7 +46,7 @@ import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
 
 
-public class TimePrefActivity extends Activity {
+public class TimePrefActivity extends AppCompatActivity {
 
     Context context;
 
@@ -68,7 +73,7 @@ public class TimePrefActivity extends Activity {
         myPrefEditor = myPref.edit();
 
 
-        String hotel_name = myPref.getString("HotelName", "");
+        final String hotel_name = myPref.getString("HotelName", "");
         String hotel_url = myPref.getString("HotelImageUrl", "");
 
         setImage(hotel_name, hotel_url);
@@ -85,11 +90,47 @@ public class TimePrefActivity extends Activity {
                 myPrefEditor.putLong("Date", cal.getTimeInMillis());
                 myPrefEditor.commit();
 
-                Intent menuIntent = new Intent(context, SharedMenu.class);
+                String hotelId = myPref.getString("HotelId", "");
+                ParseUser user = ParseUser.getCurrentUser();
 
-                context.startActivity(menuIntent);
+                ParseQuery<ParseObject> hotelQuery = ParseQuery.getQuery("Hotel");
+
+                ParseObject hotelObj = new ParseObject("Hotel");
+                hotelObj.setObjectId(hotelId);
+
+                final ParseObject hotelBookingObj = new ParseObject("UserBooking");
+                hotelBookingObj.put("ReservationTime", cal.getTime());
+                hotelBookingObj.put("BookedHotel", hotelObj);
+                hotelBookingObj.put("User", user);
+                hotelBookingObj.put("BookingState", 1);
+                hotelBookingObj.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+
+                        if (e == null) {
+
+                            Intent bookingIntent = new Intent(context, UserBookingActivity.class);
+                            bookingIntent.putExtra("bookingId", hotelBookingObj.getObjectId());
+                            context.startActivity(bookingIntent);
+
+                        } else {
+
+                        }
+                    }
+                });
             }
         });
+
+        setUpActionBar();
+    }
+
+    private void setUpActionBar() {
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setDisplayShowCustomEnabled(true);
     }
 
     private void setImage(String hotelName, String pic) {
@@ -261,7 +302,7 @@ public class TimePrefActivity extends Activity {
         ImageButton late_time_down_btn = (ImageButton) findViewById(R.id.late_time_down_button);
         final TextView late_time_text_view = (TextView) findViewById(R.id.late_time_text);
 
-        final SimpleDateFormat formatter=new SimpleDateFormat("hh:mm");
+        final SimpleDateFormat formatter = new SimpleDateFormat("hh:mm");
 
 
         int minutes = cal.get(Calendar.MINUTE);
@@ -330,6 +371,15 @@ public class TimePrefActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == android.R.id.home) {
+            SharedPreferences myPref = context.getSharedPreferences("MyPref", context.MODE_PRIVATE);
+            String hotelId = myPref.getString("HotelId", "");
+
+            Intent hotel_profile_intent = new Intent(this, HotelProfileActivity.class);
+            hotel_profile_intent.putExtra("HotelId", hotelId);
+
+            NavUtils.navigateUpTo(this, hotel_profile_intent);
             return true;
         }
 
