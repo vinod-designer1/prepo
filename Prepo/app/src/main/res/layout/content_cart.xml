@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_cart"
+    tools:context="com.prepo.CartActivity">
+    <ListView
+        android:id="@+id/lv_cart_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+    <LinearLayout android:orientation="horizontal" android:id="@+id/menu_layout_bottom" android:layout_weight="1" android:background="@drawable/bottom_button_box_border" android:layout_width="fill_parent" android:layout_height="62.5dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
+        <Button android:id="@+id/menu_confirm_button" android:layout_width="0dp" android:layout_weight="0.5" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:text="@string/menu_preorder" style="@style/GoldButton" />
+    </LinearLayout>
+</RelativeLayout>

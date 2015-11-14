@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Prepo</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <string name="facebook_app_id">1633765823532324</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_mobile">Mobile Number</string>
+    <string name="action_register_in_short">Register</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_parse_login">ParseLoginActivity</string>
+
+    <string name="password_reset_text">Reset Password</string>
+    <string name="title_activity_phone_number">PhoneNumberActivity</string>
+    <string name="title_activity_hotel_profile">HotelProfileActivity</string>
+
+    <string name="menu">Menu</string>
+    <string name="website">Website</string>
+    <string name="attire">Attire</string>
+    <string name="price">Price</string>
+    <string name="request_a_table">Request a table</string>
+    <string name="closed_during_hours_msg">Closed hours</string>
+    <string name="title_activity_shared_menu">SharedMenu</string>
+    <string name="title_activity_time_pref">TimePrefActivity</string>
+    <string name="review_your_request">Review Request</string>
+    <string name="menu_preorder">Preorder</string>
+    <string name="title_activity_user_booking">UserBookingActivity</string>
+    <string name="title_activity_user_booking_history">UserBookingHistoryActivity</string>
+    <string name="title_activity_hotel_menu">HotelMenuActivity</string>
+    <string name="menu_cart">Cart</string>
+    <string name="title_activity_cart">CartActivity</string>
+</resources>

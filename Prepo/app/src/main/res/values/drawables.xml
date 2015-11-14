@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="drawable" name="grayed">#22ffffff</item>
+    <item type="drawable" name="nav_drawer_normal">#ff1b1710</item>
+    <item type="drawable" name="nav_drawer_pressed">#ff3d361f</item>
+    <item type="drawable" name="nav_drawer_selected">#ff302a19</item>
+    <item type="drawable" name="notification_template_icon_bg">#3333b5e5</item>
+    <item type="drawable" name="reserve_text_enabled_background">#fffafafa</item>
+    <item type="drawable" name="reserve_text_enabled_background_pressed">#fffefefe</item>
+    <item type="drawable" name="transparent">#00ffffff</item>
+</resources>
